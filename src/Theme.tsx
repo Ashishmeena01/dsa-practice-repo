@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from 'react'
+import { createContext, useContext, useReducer } from 'react'
 import Navbar from '@/Navbar'
 import rd, { theme } from './reducer';
 

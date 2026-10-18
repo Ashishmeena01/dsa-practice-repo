@@ -91,10 +91,8 @@ export default function CanvasCom() {
     robot.add(head)
     roundedBox(head, [1.12, 0.82, 0.86], 0.31, shell, [0, 0, 0])
     roundedBox(head, [0.88, 0.42, 0.12], 0.17, dark, [0, -0.02, 0.438])
-    const eyes = [
-      sphere(head, 0.085, pink, [-0.22, 0.015, 0.51], [0.78, 1.12, 0.5]),
-      sphere(head, 0.085, pink, [0.22, 0.015, 0.51], [0.78, 1.12, 0.5]),
-    ]
+    sphere(head, 0.085, pink, [-0.22, 0.015, 0.51], [0.78, 1.12, 0.5])
+    sphere(head, 0.085, pink, [0.22, 0.015, 0.51], [0.78, 1.12, 0.5])
     roundedBox(head, [0.13, 0.025, 0.025], 0.01, shell, [0, -0.17, 0.514])
 
     // Low profile antenna and circular side sensors.
