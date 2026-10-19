@@ -93,7 +93,11 @@ function readStoredValue<T>(key: string, fallback: T): T {
     return fallback
   }
 }
-function loadProgress(): Progress { return readStoredValue('dsa-path-progress-v1', {}) }
+function loadProgress(): Progress {
+  const stored = readStoredValue<unknown>('dsa-path-progress-v1', {})
+  if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return {}
+  return Object.fromEntries(Object.entries(stored).filter(([, value]) => value === 'solved' || value === 'attempted')) as Progress
+}
 function loadBookmarks(): number[] { return readStoredValue('dsa-path-bookmarks-v1', []) }
 
 function App() {
