@@ -153,6 +153,14 @@ function App() {
     return () => window.removeEventListener('keydown', handleSearchShortcut)
   }, [])
   useEffect(() => {
+    if (!addOpen) return
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setAddOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [addOpen])
+  useEffect(() => {
     const clearHideTimer = () => {
       if (scrollNavTimer.current !== undefined) window.clearTimeout(scrollNavTimer.current)
     }
