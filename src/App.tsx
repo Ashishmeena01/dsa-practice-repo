@@ -93,6 +93,13 @@ function readStoredValue<T>(key: string, fallback: T): T {
     return fallback
   }
 }
+function writeStoredValue(key: string, value: unknown): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    // Storage can be unavailable or full; keep the current session usable.
+  }
+}
 function loadProgress(): Progress {
   const stored = readStoredValue<unknown>('dsa-path-progress-v1', {})
   if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return {}
