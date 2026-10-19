@@ -209,7 +209,10 @@ function App() {
   }
   const add = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const next = [...custom, { id: Date.now(), title: title.trim(), topic: topic === 'All topics' ? 'My list' : topic, difficulty: 'Medium' as const, slug: url.trim(), note: 'Added by you' }]
+    const cleanTitle = title.trim()
+    const cleanUrl = url.trim()
+    if (!cleanTitle || !cleanUrl) return
+    const next = [...custom, { id: Date.now(), title: cleanTitle, topic: topic === 'All topics' ? 'My list' : topic, difficulty: 'Medium' as const, slug: cleanUrl, note: 'Added by you' }]
     setCustom(next)
     writeStoredValue('dsa-path-custom-problems-v1', next)
     setTitle('')
