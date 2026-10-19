@@ -85,8 +85,16 @@ const syllabusProblems: Problem[] = syllabusRows.map(([id,title,topic,difficulty
 const problems: Problem[] = [...syllabusProblems, ...starterProblems.filter(p => !syllabusProblems.some(s => s.id === p.id))]
 const topics = ['All topics', ...Array.from(new Set(problems.map(p => p.topic))), 'My list']
 const tabs = ['All problems', 'To do', 'Solved', 'Bookmarked'] as const
-function loadProgress(): Progress { try { return JSON.parse(localStorage.getItem('dsa-path-progress-v1') || '{}') as Progress } catch { return {} } }
-function loadBookmarks(): number[] { try { return JSON.parse(localStorage.getItem('dsa-path-bookmarks-v1') || '[]') as number[] } catch { return [] } }
+function readStoredValue<T>(key: string, fallback: T): T {
+  try {
+    const value = localStorage.getItem(key)
+    return value === null ? fallback : JSON.parse(value) as T
+  } catch {
+    return fallback
+  }
+}
+function loadProgress(): Progress { return readStoredValue('dsa-path-progress-v1', {}) }
+function loadBookmarks(): number[] { return readStoredValue('dsa-path-bookmarks-v1', []) }
 
 function App() {
   const [darkTheme, setDarkTheme] = useState(() => localStorage.getItem('dsa-path-theme') === 'dark')
@@ -103,10 +111,7 @@ function App() {
   const [filters, setFilters] = useState(false)
   const [reverse, setReverse] = useState(false)
   const [addOpen, setAddOpen] = useState(false)
-  const [custom, setCustom] = useState<Problem[]>(() => {
-    try { return JSON.parse(localStorage.getItem('dsa-path-custom-problems-v1') || '[]') as Problem[] }
-    catch { return [] }
-  })
+  const [custom, setCustom] = useState<Problem[]>(() => readStoredValue('dsa-path-custom-problems-v1', []))
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   useEffect(() => { localStorage.setItem('dsa-path-theme', darkTheme ? 'dark' : 'light') }, [darkTheme])
