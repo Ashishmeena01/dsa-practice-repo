@@ -102,6 +102,13 @@ function loadBookmarks(): number[] {
   const stored = readStoredValue<unknown>('dsa-path-bookmarks-v1', [])
   return Array.isArray(stored) ? [...new Set(stored.filter((id): id is number => Number.isSafeInteger(id) && id > 0))] : []
 }
+function loadCustomProblems(): Problem[] {
+  const stored = readStoredValue<unknown>('dsa-path-custom-problems-v1', [])
+  if (!Array.isArray(stored)) return []
+  return stored.filter((item): item is Problem => !!item && typeof item === 'object'
+    && Number.isSafeInteger(item.id) && typeof item.title === 'string' && typeof item.topic === 'string'
+    && ['Easy', 'Medium', 'Hard'].includes(item.difficulty) && typeof item.slug === 'string' && typeof item.note === 'string')
+}
 
 function App() {
   const [darkTheme, setDarkTheme] = useState(() => localStorage.getItem('dsa-path-theme') === 'dark')
@@ -118,7 +125,7 @@ function App() {
   const [filters, setFilters] = useState(false)
   const [reverse, setReverse] = useState(false)
   const [addOpen, setAddOpen] = useState(false)
-  const [custom, setCustom] = useState<Problem[]>(() => readStoredValue('dsa-path-custom-problems-v1', []))
+  const [custom, setCustom] = useState<Problem[]>(loadCustomProblems)
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   useEffect(() => { localStorage.setItem('dsa-path-theme', darkTheme ? 'dark' : 'light') }, [darkTheme])
