@@ -98,7 +98,10 @@ function loadProgress(): Progress {
   if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return {}
   return Object.fromEntries(Object.entries(stored).filter(([, value]) => value === 'solved' || value === 'attempted')) as Progress
 }
-function loadBookmarks(): number[] { return readStoredValue('dsa-path-bookmarks-v1', []) }
+function loadBookmarks(): number[] {
+  const stored = readStoredValue<unknown>('dsa-path-bookmarks-v1', [])
+  return Array.isArray(stored) ? [...new Set(stored.filter((id): id is number => Number.isSafeInteger(id) && id > 0))] : []
+}
 
 function App() {
   const [darkTheme, setDarkTheme] = useState(() => localStorage.getItem('dsa-path-theme') === 'dark')
