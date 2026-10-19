@@ -191,7 +191,7 @@ function App() {
     })
     return reverse ? matches.reverse() : matches
   }, [all, progress, bookmarks, tab, topic, difficulty, query, reverse])
-  const save = (next: Progress) => { setProgress(next); localStorage.setItem('dsa-path-progress-v1', JSON.stringify(next)) }
+  const save = (next: Progress) => { setProgress(next); writeStoredValue('dsa-path-progress-v1', next) }
   const toggle = (id: number, status: 'solved' | 'attempted') => { const next = {...progress}; if (next[id] === status) delete next[id]; else next[id] = status; save(next) }
   const toggleBookmark = (id: number) => { const next = bookmarks.includes(id) ? bookmarks.filter(value => value !== id) : [...bookmarks, id]; setBookmarks(next); localStorage.setItem('dsa-path-bookmarks-v1', JSON.stringify(next)) }
   const current = problems.find(p => !progress[p.id]) || problems[0]
