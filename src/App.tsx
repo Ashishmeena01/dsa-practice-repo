@@ -100,6 +100,9 @@ function writeStoredValue(key: string, value: unknown): void {
     // Storage can be unavailable or full; keep the current session usable.
   }
 }
+function removeStoredValue(key: string): void {
+  try { localStorage.removeItem(key) } catch { /* Storage can be disabled in the browser. */ }
+}
 function loadProgress(): Progress {
   const stored = readStoredValue<unknown>('dsa-path-progress-v1', {})
   if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return {}
@@ -217,9 +220,9 @@ function App() {
     if (!confirm('Clear all saved progress and custom problems?')) return
     save({})
     setBookmarks([])
-    localStorage.removeItem('dsa-path-bookmarks-v1')
+    removeStoredValue('dsa-path-bookmarks-v1')
     setCustom([])
-    localStorage.removeItem('dsa-path-custom-problems-v1')
+    removeStoredValue('dsa-path-custom-problems-v1')
   }
   const jumpTo = (position: 'top' | 'middle' | 'bottom') => {
     const heading = document.getElementById('problem-list')
