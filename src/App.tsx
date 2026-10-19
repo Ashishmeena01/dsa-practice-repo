@@ -135,7 +135,7 @@ function App() {
   const [custom, setCustom] = useState<Problem[]>(loadCustomProblems)
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
-  useEffect(() => { localStorage.setItem('dsa-path-theme', darkTheme ? 'dark' : 'light') }, [darkTheme])
+  useEffect(() => { writeStoredValue('dsa-path-theme', darkTheme ? 'dark' : 'light') }, [darkTheme])
   useEffect(() => {
     const handleSearchShortcut = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
@@ -208,7 +208,7 @@ function App() {
     e.preventDefault()
     const next = [...custom, { id: Date.now(), title: title.trim(), topic: topic === 'All topics' ? 'My list' : topic, difficulty: 'Medium' as const, slug: url.trim(), note: 'Added by you' }]
     setCustom(next)
-    localStorage.setItem('dsa-path-custom-problems-v1', JSON.stringify(next))
+    writeStoredValue('dsa-path-custom-problems-v1', next)
     setTitle('')
     setUrl('')
     setAddOpen(false)
