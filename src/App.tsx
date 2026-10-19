@@ -193,7 +193,7 @@ function App() {
   }, [all, progress, bookmarks, tab, topic, difficulty, query, reverse])
   const save = (next: Progress) => { setProgress(next); writeStoredValue('dsa-path-progress-v1', next) }
   const toggle = (id: number, status: 'solved' | 'attempted') => { const next = {...progress}; if (next[id] === status) delete next[id]; else next[id] = status; save(next) }
-  const toggleBookmark = (id: number) => { const next = bookmarks.includes(id) ? bookmarks.filter(value => value !== id) : [...bookmarks, id]; setBookmarks(next); localStorage.setItem('dsa-path-bookmarks-v1', JSON.stringify(next)) }
+  const toggleBookmark = (id: number) => { const next = bookmarks.includes(id) ? bookmarks.filter(value => value !== id) : [...bookmarks, id]; setBookmarks(next); writeStoredValue('dsa-path-bookmarks-v1', next) }
   const current = problems.find(p => !progress[p.id]) || problems[0]
   const link = (p: Problem) => {
     const customProblem = custom.find(c => c.id === p.id && c.title === p.title)
